@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkxy.demomaven.dao.PoetryDao">
+	<resultMap id="BaseResultMap" type="com.jkxy.demomaven.domain.SearchResult">
+		<result column="poetName" property="poetName" jdbcType="VARCHAR" />
+		<result column="poetTitle" property="poetryTitle" jdbcType="VARCHAR" />
+		<result column="poetContent" property="poetryContent" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 根据诗人名查询 -->
+	<select id="selectByPoetName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+			pt.`name` poetName,
+			pty.title poetTitle,
+			pty.content poetContent
+		FROM
+			poetries pty
+		LEFT JOIN poets pt ON pty.poet_id = pt.id
+		WHERE
+			pt.`name` = #{poetName,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据诗标题查询 -->
+	<select id="selectByPoetryTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+			pt.`name` poetName,
+			pty.title poetTitle,
+			pty.content poetContent
+		FROM
+			poetries pty
+		LEFT JOIN poets pt ON pty.poet_id = pt.id
+		WHERE
+			pty.title= #{poetryTitle,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据诗内容查询 -->
+	<select id="selectByPoetryContent" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+			pt.`name` poetName,
+			pty.title poetTitle,
+			pty.content poetContent
+		FROM
+			poetries pty
+		LEFT JOIN poets pt ON pty.poet_id = pt.id
+		WHERE
+			pty.content like CONCAT('%',#{poetryContent,jdbcType=VARCHAR},'%' )
+	</select>
+</mapper>
